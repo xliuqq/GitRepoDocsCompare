@@ -38,59 +38,65 @@ def temp_change_work_dir(temp_work_dir):
         os.chdir(current_work_dir)
 
 
-# TODO: diff_save可以自定义，并且不需要事先创建
+# TODO: templates 可以自定义，并且不需要事先创建
 def get_out_diff_path(name, old_release, new_release):
     old_release = old_release.replace("/", "_")
     new_release = new_release.replace("/", "_")
-    return f"diff_save/{name}-{new_release}-{old_release}.out"
+    return f"templates/{name}-{old_release}-{new_release}.out"
 
 
 def get_out_diff_html_path(name, old_release, new_release):
     old_release = old_release.replace("/", "_")
     new_release = new_release.replace("/", "_")
-    return f"diff_save/{name}-{new_release}-{old_release}.html"
+    return f"templates/{name}-{old_release}-{new_release}.html"
 
 
 # 比较的内容载在一个分支内
-def compare_with_diff(name, new_version, old_version, docs_dir, repo_path):
+def compare_with_diff(name, old_version, new_version, new_docs_dir, old_docs_dir, repo_path):
+    diff_file = get_out_diff_path(name, old_version, new_version)
+    if not os.path.exists(diff_file):
+        with temp_change_work_dir(repo_path) as current_work_dir:
+            # 获取diff old new 的结果
+            diff_cmd = f"diff -u {old_docs_dir} {new_docs_dir} > {current_work_dir}/{diff_file}"
+            f = os.popen(diff_cmd)
+            return_code = f.close()
+            print(f"generate diff file from {repo_path}-{return_code}: {diff_cmd}")
+            return diff_file
+    else:
+        print(f"read diff file from existing {diff_file}")
+        return diff_file
+
+
+# 基于git的版本控制，通过指定版本号，进行对比
+def compare_with_git(name, old_version, new_version, new_tag, old_tag, directory_or_file, repo_path):
     diff_file = get_out_diff_path(name, old_version, new_version)
     if not os.path.exists(diff_file):
         with temp_change_work_dir(repo_path) as current_work_dir:
             # 获取git diff的结果
-            diff_cmd = f"diff -u {docs_dir}/{old_version} {docs_dir}/{new_version} > {current_work_dir}/{diff_file}"
-            f = os.popen(diff_cmd)
-            return_code = f.close()
-            print(f"generate diff file from {repo_path}-{return_code}: {diff_cmd}")
-    else:
-        print(f"read diff file from existing {diff_file}")
-
-
-# 基于git的版本控制，通过指定版本号，进行对比
-def compare_with_git(name, old_release, new_release, directory_or_file, repo_path):
-    diff_file = get_out_diff_path(name, old_release, new_release)
-    if not os.path.exists(diff_file):
-        with temp_change_work_dir(repo_path) as current_work_dir:
-            # 获取git diff的结果
             print(f"generate diff file from {repo_path}")
-            diff_cmd = f"git diff --output {current_work_dir}/{diff_file} {old_release} {new_release} {directory_or_file} "
+            diff_cmd = f"git diff --output {current_work_dir}/{diff_file} {old_tag} {new_tag} {directory_or_file} "
             f = os.popen(diff_cmd)
             if f.close() == 1:
                 print(f"Error when executing command {diff_cmd}")
                 os.remove(diff_file)
-                exit(-1)
+            return diff_file
     else:
         print(f"read diff file from existing {diff_file}")
+        return diff_file
 
 
-def js_show_diff(name, old_release, new_release, style="line"):
+def js_show_diff(diff_file, name, old_release, new_release, style="line"):
     diff_file_html = get_out_diff_html_path(name, old_release, new_release)
     if not os.path.exists(diff_file_html):
-        diff_file = get_out_diff_path(name, old_release, new_release)
         # diff结果的可视化，采用diff2html的
-        show_cmd = f"diff2html  -F {diff_file_html} -f html -s {style} -i file -- {diff_file}"
+        show_cmd = f"diff2html -F {diff_file_html} -f html -s {style} -i file -- {diff_file}"
+        print(show_cmd)
         os.system(show_cmd)
+        os.remove(diff_file)
     else:
         print(f"diff html file exists {diff_file_html}")
+
+    return diff_file_html
 
 
 def get_checkout_branch(branch_name, repo_path):
@@ -103,20 +109,12 @@ def get_checkout_branch(branch_name, repo_path):
             print(f"Error when executing command '{cmd}'")
 
 
-def git_checkout_version(src_release, dst_release, repo_path):
+def get_tags(repo_path):
     with temp_change_work_dir(repo_path):
         cmd = "git tag -l"
         f = os.popen(cmd)
         content = set(f.read().splitlines())
-        if src_release not in content:
-            print(f"Error {src_release} is not present!")
-            exit(-1)
-        if dst_release not in content:
-            print(f"Error {dst_release} is not present!")
-            exit(-1)
-        if f.close() == 1:
-            print(f"Error when executing command '{cmd}'")
-            exit(-1)
+        return content
 
 
 def compare_version(new_version, old_version):
