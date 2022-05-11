@@ -39,7 +39,7 @@ class IRepo(object):
 
     def _git_pull(self):
         with temp_change_work_dir(self._get_repo_path()) as old_dir:
-            cmd = ["git", "pull"]
+            cmd = "git pull"
             p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
             out = p.stdout.readlines()
             print(f"git pull:{out}")
@@ -48,10 +48,10 @@ class IRepo(object):
         return self._store_dir + "/" + self._name
 
     def _git_clone(self):
-        cmd = ["git", "clone", self._url]
+        cmd = f"git clone {self._url}"
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
         out = p.stdout.readlines()
-        print(f"git clone result:{out}")
+        print(f"git clone [{cmd}] result:{out}")
 
     def _write_metadata(self, version):
         import pickle
