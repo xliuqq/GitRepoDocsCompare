@@ -70,7 +70,9 @@ def get_diff(name):
 
 if __name__ == '__main__':
     address = "172.16.1.217:17777"
+    host = address.split(":")[0]
+    port = int(address.split(":")[1])
     t = Timer(1, get_repo_diffs, (address,))
     t.start()
 
-    app.run(port=17777)
+    app.run(host=host, port=port)
