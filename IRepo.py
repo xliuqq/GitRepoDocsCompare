@@ -12,7 +12,7 @@ class IRepo(object):
         self._name = git_url.split("/")[-1].split(".git")[0]
         self._url = git_url
         self._store_dir = store_dir
-        self._metadata_filename = self._name + ".meta"
+        self._metadata_filename = f"meta/{self._name}.meta"
         self._version_format = tag_version_format
         self._regex = re.compile(r"^" + self._version_format.replace("{}", r"([.\d]*)") + r"$")
 
@@ -65,15 +65,9 @@ class IRepo(object):
         old_version = self._get_old_version()
         new_version = self._get_newer_version(old_version)
 
-        if len(new_version) == 0:
+        if new_version == old_version:
             print(f"The newest version is current {old_version}")
             return new_version, old_version, None
-
-        if len(new_version) > 1:
-            print(f"Exist multiple newer version: {new_version} than {old_version}")
-            return new_version, old_version, None
-
-        new_version = new_version[0]
 
         print(f"get diff between {new_version} and {old_version}")
 

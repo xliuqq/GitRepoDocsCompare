@@ -20,14 +20,14 @@ class Repo(IRepo):
         self._git_pull()
 
         tags = get_tags(self._get_repo_path())
-        newer_version = []
+        newer_version = old_version
         for tag in tags:
             match_tag = self._regex.findall(tag)
             if len(match_tag) == 0:
                 continue
             version = match_tag[0]
-            if compare_version(version, old_version) > 0:
-                newer_version.append(version)
+            if compare_version(version, newer_version) > 0:
+                newer_version = version
         return newer_version
 
     def _get_diff(self, old_version, new_version):

@@ -13,7 +13,7 @@ app = Flask(__name__)
 repos = {
     "Hudi": HudiRepo(initial_version="0.10.1", store_dir="projects", git_url="https://gitee.com/apache/Hudi.git",
                      docs_branch="asf-site", docs_dir="website/versioned_docs", version_format="version-{}"),
-    "spark": Repo(initial_version="3.1.1", store_dir="projects", git_url="https://gitee.com/apache/spark.git",
+    "spark": Repo(initial_version="3.2.0", store_dir="projects", git_url="https://gitee.com/apache/spark.git",
                   compare_dir="docs", tag_version_format="v{}")
 }
 
@@ -49,9 +49,6 @@ def get_repo_diffs(address):
     t.start()
 
 
-# get_diff("Spark", "v2.4.5", "v3.1.2", "D:\\repos\\spark", "docs")
-
-
 # 设置工作环境为python脚本所在的文件
 current_work_path = os.getcwd()
 current_script_path = sys.path[0]
@@ -72,7 +69,7 @@ def get_diff(name):
 
 
 if __name__ == '__main__':
-    address = "172.16.2.217:17777"
+    address = "172.16.1.217:17777"
     t = Timer(1, get_repo_diffs, (address,))
     t.start()
 

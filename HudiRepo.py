@@ -28,11 +28,11 @@ class HudiRepo(IRepo):
 
         import os
         files = os.listdir(f"{self._get_repo_path()}/{self._docs_dir}")
-        newer_version = []
+        newer_version = old_version
         for file in files:
             version = self._regex.findall(file)[0]
-            if version is not None and compare_version(version, old_version) > 0:
-                newer_version.append(version)
+            if version is not None and compare_version(version, newer_version) > 0:
+                newer_version = version
         return newer_version
 
     def _get_diff(self, old_version, new_version):
