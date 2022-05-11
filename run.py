@@ -45,7 +45,7 @@ def get_repo_diffs(address):
         print(r.text)  # 请求返回内容
         print(r.status_code)  # 请求返回状态
 
-    t = Timer(1, get_repo_diffs, (address,))
+    t = Timer(3600 * 24, get_repo_diffs, (address,))
     t.start()
 
 
