@@ -14,7 +14,10 @@ repos = {
     "Hudi": HudiRepo(initial_version="0.10.1", store_dir="projects", git_url="https://gitee.com/apache/Hudi.git",
                      docs_branch="asf-site", docs_dir="website/versioned_docs", version_format="version-{}"),
     "spark": Repo(initial_version="3.2.0", store_dir="projects", git_url="https://gitee.com/apache/spark.git",
-                  compare_dir="docs", tag_version_format="v{}")
+                  compare_dir="docs", tag_version_format="v{}"),
+    "kubebuilder": Repo(initial_version="3.4.1", store_dir="projects",
+                        git_url="https://github.com/kubernetes-sigs/kubebuilder.git",
+                        compare_dir="docs/book/src", tag_version_format="v{}")
 }
 
 
