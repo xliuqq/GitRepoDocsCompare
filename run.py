@@ -1,12 +1,15 @@
-import sys
-from threading import Timer
-import requests
-from flask import Flask, Response
+import datetime
 import json
 import os
-import datetime
+import sys
+from threading import Timer
+
+import requests
+from flask import Flask, Response
+
 from HudiRepo import HudiRepo
 from Repo import Repo
+from diff import get_out_diff_html_path
 
 app = Flask(__name__)
 
@@ -19,8 +22,8 @@ repos = {
                         git_url="https://gitee.com/import-github/kubebuilder.git",
                         compare_dir="docs/book/src", tag_version_format="v{}"),
     "sealer": Repo(initial_version="0.8.4", store_dir="projects",
-                        git_url="https://github.com/sealerio/sealer.git",
-                        compare_dir="docs", tag_version_format="v{}")
+                   git_url="https://github.com/sealerio/sealer.git",
+                   compare_dir="docs", tag_version_format="v{}")
 }
 
 
@@ -33,7 +36,7 @@ def get_repo_diffs(address):
         if out_html_file is None:
             continue
         # DingTalk
-        code_result = f'#### [{name}-新版本-{new_version}-通知](http://{address}/diff/{name}) \n\n 新版本:{new_version}, 旧版本:{old_version}'
+        code_result = f'#### [{name}-新版本-{new_version}-通知](http://{address}/diff/{name}/{new_version}/{old_version}) \n\n 新版本:{new_version}, 旧版本:{old_version}'
         pagrem = {
             "msgtype": "markdown",
             "markdown": {
@@ -62,16 +65,12 @@ os.chdir(current_script_path)
 print("Current work path is ", os.getcwd())
 
 
-@app.route('/diff/<name>')
-def get_diff(name):
-    files = os.listdir("templates")
-    for file in files:
-        if file.startswith(name):
-            image = open(f"templates/{file}", mode='rb')
-            response = Response(image, mimetype="text/html")
-            return response
-
-    return f"{name} has no update!"
+@app.route('/diff/<name>/<newversion>/<oldversion>')
+def get_diff(name, newversion, oldversion):
+    file = get_out_diff_html_path(name, oldversion, newversion)
+    image = open(file, mode='rb')
+    response = Response(image, mimetype="text/html")
+    return response
 
 
 if __name__ == '__main__':
