@@ -16,8 +16,11 @@ repos = {
     "spark": Repo(initial_version="3.2.0", store_dir="projects", git_url="https://gitee.com/apache/spark.git",
                   compare_dir="docs", tag_version_format="v{}"),
     "kubebuilder": Repo(initial_version="3.4.1", store_dir="projects",
-                        git_url="https://github.com/kubernetes-sigs/kubebuilder.git",
-                        compare_dir="docs/book/src", tag_version_format="v{}")
+                        git_url="https://gitee.com/import-github/kubebuilder.git",
+                        compare_dir="docs/book/src", tag_version_format="v{}"),
+    "sealer": Repo(initial_version="0.8.4", store_dir="projects",
+                        git_url="https://github.com/sealerio/sealer.git",
+                        compare_dir="docs", tag_version_format="v{}")
 }
 
 
