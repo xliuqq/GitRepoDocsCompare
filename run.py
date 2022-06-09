@@ -23,7 +23,10 @@ repos = {
                         compare_dir="docs/book/src", tag_version_format="v{}"),
     "sealer": Repo(initial_version="0.8.4", store_dir="projects",
                    git_url="https://github.com/sealerio/sealer.git",
-                   compare_dir="docs", tag_version_format="v{}")
+                   compare_dir="docs", tag_version_format="v{}"),
+    "presto": Repo(initial_version="0.273", store_dir="projects",
+                   git_url="https://github.com/prestodb/presto.git",
+                   compare_dir="presto-docs/src/main/sphinx", tag_version_format="{}")
 }
 
 

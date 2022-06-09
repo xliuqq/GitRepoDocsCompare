@@ -117,22 +117,25 @@ def get_tags(repo_path):
         return content
 
 
-def compare_version(new_version, old_version):
+def compare_version(first_version, second_version):
     """
     版本号比较
-    :param new_version: a.b.c 格式
-    :param old_version: a.b.c 格式
+    :param first_version: a.b.c 格式
+    :param second_version: a.b.c 格式
     :return: 1 表示 new > old, -1 表示 new < old
     """
-    new_version_nums = new_version.split(".")
-    old_version_nums = old_version.split(".")
-    length = len(new_version_nums)
+    first_version_nums = first_version.split(".")
+    second_version_nums = second_version.split(".")
+    length = min(len(first_version_nums), len(second_version_nums))
     for i in range(length):
-        if int(new_version_nums[i]) > int(old_version_nums[i]):
+        if int(first_version_nums[i]) > int(second_version_nums[i]):
             return 1
-        elif int(new_version_nums[i]) < int(old_version_nums[i]):
+        elif int(first_version_nums[i]) < int(second_version_nums[i]):
             return -1
-
+    if len(first_version_nums) > len(second_version_nums):
+        return 1
+    elif len(first_version_nums) < len(second_version_nums):
+        return -1
     return 0
 
 
@@ -141,3 +144,7 @@ if __name__ == '__main__':
     assert  compare_version("0.5.0", "0.10.3") == -1
     assert  compare_version("2.22.3", "1.22.3") == 1
     assert  compare_version("1.22.2", "1.22.2") == 0
+    assert  compare_version("1.225.1", "1.226") == -1
+    assert  compare_version("1.226.1", "1.226") == 1
+    assert  compare_version("1.226", "1.226.2") == -1
+    assert  compare_version("1.226.2", "1.227") == -1
