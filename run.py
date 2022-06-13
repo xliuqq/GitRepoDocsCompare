@@ -80,7 +80,7 @@ def get_diff(name, newversion, oldversion):
 
 
 if __name__ == '__main__':
-    address = "0.0.0.0:17777"
+    address = "172.16.1.217:17777"
     host = address.split(":")[0]
     port = int(address.split(":")[1])
     t = Timer(1, get_repo_diffs, (address,))
