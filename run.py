@@ -26,7 +26,10 @@ repos = {
                    compare_dir="docs", tag_version_format="v{}"),
     "presto": Repo(initial_version="0.273", store_dir="projects",
                    git_url="https://github.com/prestodb/presto.git",
-                   compare_dir="presto-docs/src/main/sphinx", tag_version_format="{}")
+                   compare_dir="presto-docs/src/main/sphinx", tag_version_format="{}"),
+    "flink": Repo(initial_version="1.14.4", store_dir="projects",
+                   git_url="https://github.com/apache/flink.git",
+                   compare_dir="docs", tag_version_format="release-{}")
 }
 
 
@@ -77,7 +80,7 @@ def get_diff(name, newversion, oldversion):
 
 
 if __name__ == '__main__':
-    address = "172.16.1.217:17777"
+    address = "0.0.0.0:17777"
     host = address.split(":")[0]
     port = int(address.split(":")[1])
     t = Timer(1, get_repo_diffs, (address,))
