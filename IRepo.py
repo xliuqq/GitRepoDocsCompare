@@ -25,6 +25,11 @@ class IRepo(object):
                 return version
         return self._initial_version
 
+    def _write_version(self, version):
+        import pickle
+        with open(self._metadata_filename, "wb") as file:
+            pickle.dump(version, file)
+
     def _mk_git_dir(self):
         Path(self._store_dir).mkdir(exist_ok=True)
 
@@ -53,11 +58,6 @@ class IRepo(object):
         out = p.stdout.readlines()
         print(f"git clone [{cmd}] result:{out}")
 
-    def _write_metadata(self, version):
-        import pickle
-        with open(self._metadata_filename, "wb") as file:
-            pickle.dump(version, file)
-
     def get_diffs(self):
         # check git directory is exist, if not exist, git clone
         self._mk_git_dir()
@@ -74,7 +74,7 @@ class IRepo(object):
         out_html_file = self._get_diff(old_version, new_version)
 
         if out_html_file is not None:
-            self._write_metadata(new_version)
+            self._write_version(new_version)
 
         return new_version, old_version, out_html_file
 

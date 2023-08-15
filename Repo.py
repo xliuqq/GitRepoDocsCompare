@@ -1,6 +1,3 @@
-import logging
-import re
-
 from IRepo import IRepo
 from diff import compare_with_git, js_show_diff, compare_version, get_tags
 
@@ -36,7 +33,7 @@ class Repo(IRepo):
         new_docs_version = self._version_format.format(new_version)
         old_docs_version = self._version_format.format(old_version)
         diff_file = compare_with_git(repo_name, old_version=old_version, new_version=new_version,
-                         new_tag=new_docs_version, old_tag=old_docs_version,
-                         directory_or_file=self._compare_dir, repo_path=repo_path)
+                                     new_tag=new_docs_version, old_tag=old_docs_version,
+                                     directory_or_file=self._compare_dir, repo_path=repo_path)
         if diff_file is not None:
             return js_show_diff(diff_file, repo_name, old_version, new_version)

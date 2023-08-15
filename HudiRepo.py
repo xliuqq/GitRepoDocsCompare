@@ -1,9 +1,5 @@
-import re
-import subprocess
-from pathlib import Path
-
 from IRepo import IRepo
-from diff import js_show_diff, get_checkout_branch, compare_with_diff, temp_change_work_dir, compare_version
+from diff import js_show_diff, git_checkout_branch, compare_with_diff, compare_version
 
 
 class HudiRepo(IRepo):
@@ -12,8 +8,8 @@ class HudiRepo(IRepo):
         """
         :param initial_version: 初始版本
         :param git_url: git repo 地址
-        :param tag_version_regex: 版本的格式的正则匹配
-        :param compare_dir: 比较的目录
+        :param docs_branch: docs 的分支名
+        :param docs_dir: 比较的目录
         :param version_format: 版本的格式，如 version-1.2.3形式，则用 version-{} 替代
         """
         super().__init__(initial_version, git_url, store_dir, version_format)
@@ -22,7 +18,7 @@ class HudiRepo(IRepo):
 
     def _get_newer_version(self, old_version):
         # check the branch is exist or not
-        get_checkout_branch(self._docs_branch, repo_path=self._get_repo_path())
+        git_checkout_branch(self._docs_branch, repo_path=self._get_repo_path())
 
         self._git_pull()
 

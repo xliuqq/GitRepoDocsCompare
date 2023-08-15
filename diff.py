@@ -99,7 +99,7 @@ def js_show_diff(diff_file, name, old_release, new_release, style="line"):
     return diff_file_html
 
 
-def get_checkout_branch(branch_name, repo_path):
+def git_checkout_branch(branch_name, repo_path):
     with temp_change_work_dir(repo_path):
         cmd = f"git checkout {branch_name}"
         f = os.popen(cmd)
