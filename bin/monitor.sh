@@ -4,12 +4,12 @@
 
 base_dir=$(cd `dirname $0`; pwd)
 
-echo $base_dir
-
 pid=$(ps -ef | grep run.py | grep -v grep | awk '{print $2}')
 
 if [ $pid"x" == "x" ] ; then
-   $base_dir/start_timer_compare.sh
+    echo "run process not found" 
+    conda activate git_docs_compare
+    $base_dir/start_timer_compare.sh
 fi
 
 
