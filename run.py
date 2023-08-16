@@ -6,8 +6,7 @@ from threading import Timer
 
 import requests
 
-from conf import dingtalk_webhook
-from conf import repos
+from conf import settings
 from diff import get_out_diff_html_path
 
 
@@ -29,7 +28,7 @@ def notify_dingding(address, name, old_version, new_version):
     headers = {
         'Content-Type': 'application/json'
     }
-    r = requests.post(dingtalk_webhook, data=json.dumps(pagrem), headers=headers)
+    r = requests.post(settings["dingtalk_webhook"], data=json.dumps(pagrem), headers=headers)
     print(r.text)  # 请求返回内容
     print(r.status_code)  # 请求返回状态
 
@@ -39,6 +38,7 @@ class Run(object):
         self._address = address
 
     def get_repo_diffs(self):
+        repos = settings["repos"]
         for name in repos:
             print(f"{datetime.datetime.now()}: get repo [{name}]")
             repo = repos.get(name)
@@ -82,7 +82,9 @@ if __name__ == '__main__':
 
     list_of_arguments = sys.argv
 
+    address = f"http://{settings['webserver_ip']}:{settings['webserver_port']}"
+
     if len(list_of_arguments) == 1 or list_of_arguments[1] == "timer":
-        TimerRun("172.16.1.217:17777").start()
+        TimerRun(f"{address}").start()
     elif list_of_arguments[1] == "once":
-        OnceRun("172.16.1.217:17777").start()
+        OnceRun(f"{address}").start()

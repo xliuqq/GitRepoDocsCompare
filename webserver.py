@@ -7,6 +7,8 @@ import sys
 
 from flask import Flask, Response
 
+from conf import settings
+
 app = Flask(__name__)
 
 # 设置工作环境为python脚本所在的文件
@@ -35,8 +37,4 @@ def get_diff(file_name):
 
 
 if __name__ == '__main__':
-    address = "0.0.0.0:17777"
-    host = address.split(":")[0]
-    port = int(address.split(":")[1])
-
-    app.run(host=host, port=port)
+    app.run(host="0.0.0.0", port=settings["webserver_port"])
