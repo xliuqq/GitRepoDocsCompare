@@ -25,7 +25,7 @@ def list_files():
     files = os.listdir(f"{html_dirs}/")
     files.remove(".git_keep")
 
-    links = ["<a href='" + x + "' />" for x in files]
+    links = ["<a href='" + x + "' >" + x + "</a>"  for x in files]
 
     response = Response("<br><br>".join(links), mimetype="text/html")
     return response

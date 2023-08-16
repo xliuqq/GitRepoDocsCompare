@@ -3,4 +3,5 @@ __pycache__/
 .idea
 projects/
 templates/*.html
-*.meta
+logs/
+meta/*.meta
