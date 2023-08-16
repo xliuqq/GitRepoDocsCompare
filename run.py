@@ -11,7 +11,7 @@ from conf import repos
 from diff import get_out_diff_html_path
 
 
-def notify_dingding(address, name, new_version, old_version):
+def notify_dingding(address, name, old_version, new_version):
     html_file = get_out_diff_html_path(name, old_version, new_version)
     # DingTalk
     code_result = f'#### [{name}-新版本-{new_version}-通知]({address}/{html_file}) \n\n 新版本:{new_version}, ' \

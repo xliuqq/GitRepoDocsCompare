@@ -1,12 +1,23 @@
 
 ## 依赖
 
-Python3: flask
+安装 miniconda
 
-NodeJs: diff2html-cli 模块
+conda install python
+
+conda install nodejs
+
+pip install flask requests
+
+npm install -g diff2html-cli
 
 
 ## 运行
 
-配置 `run.py` 中的`address`字段和`repo`字段。
-执行`python3 run.py`
+配置 `conf.py` 中的`repo`等字段。
+
+- 执行 `python3 run.py once` 仅运行一次
+- 执行 `python3 run.py timer` 定时执行
+
+
+## 解决仓库太大的问题
