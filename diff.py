@@ -45,10 +45,15 @@ def get_out_diff_path(name, old_release, new_release):
     return f"templates/{name}-{old_release}-{new_release}.out"
 
 
-def get_out_diff_html_path(name, old_release, new_release):
+def get_out_diff_html_name(name, old_release, new_release):
     old_release = old_release.replace("/", "_")
     new_release = new_release.replace("/", "_")
-    return f"templates/{name}-{old_release}-{new_release}.html"
+    return f"{name}-{old_release}-{new_release}.html"
+
+
+def get_out_diff_html_path(name, old_release, new_release):
+    file_name = get_out_diff_html_name(name, old_release, new_release)
+    return f"templates/{file_name}"
 
 
 # 比较的内容载在一个分支内

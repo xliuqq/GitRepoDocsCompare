@@ -7,11 +7,11 @@ from threading import Timer
 import requests
 
 from conf import settings
-from diff import get_out_diff_html_path
+from diff import get_out_diff_html_name
 
 
 def notify_dingding(address, name, old_version, new_version):
-    html_file = get_out_diff_html_path(name, old_version, new_version)
+    html_file = get_out_diff_html_name(name, old_version, new_version).lstrip()
     # DingTalk
     code_result = f'#### [{name}-新版本-{new_version}-通知]({address}/{html_file}) \n\n 新版本:{new_version}, ' \
                   f'旧版本:{old_version}'
@@ -85,10 +85,10 @@ if __name__ == '__main__':
     print("Current work path is ", os.getcwd())
 
     list_of_arguments = sys.argv
-    
-    address = f"http://{settings['webserver_ip']}:{settings['webserver_port']}"
+
+    notify_address = f"http://{settings['webserver_ip']}:{settings['webserver_port']}"
 
     if len(list_of_arguments) == 1 or list_of_arguments[1] == "timer":
-        TimerRun(f"{address}").start()
+        TimerRun(f"{notify_address}").start()
     elif list_of_arguments[1] == "once":
-        OnceRun(f"{address}").start()
+        OnceRun(f"{notify_address}").start()
