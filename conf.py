@@ -22,6 +22,5 @@ settings = {
     "timer_interval_seconds": 3600 * 24,
 
     "webserver_port": 17777,
-
     "webserver_ip": "0.0.0.0",
 }

@@ -52,6 +52,10 @@ class Run(object):
 
 
 class TimerRun(Run):
+    """
+        定时运行，配合Web服务，对外提供界面展示版本文档差异界面内，并配置钉钉通知。
+    """
+
     def __init__(self, address: str, interval: int = 3600 * 24):
         super().__init__(address)
         self._interval = interval
@@ -81,7 +85,7 @@ if __name__ == '__main__':
     print("Current work path is ", os.getcwd())
 
     list_of_arguments = sys.argv
-
+    
     address = f"http://{settings['webserver_ip']}:{settings['webserver_port']}"
 
     if len(list_of_arguments) == 1 or list_of_arguments[1] == "timer":

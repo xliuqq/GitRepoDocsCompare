@@ -3,6 +3,11 @@
 原理：通过将相关仓库 git clone，查看相应的 tag 信息，发现新的版本，通过 git diff 记录文档差异，并通过 diff2html
 工具转换成 html 界面。
 
+TODO
+- 如果单次执行（作为Github Action），每次都要 clone 仓库，效率太慢
+- 针对 Hadoop 这种仓库，其文档分散在多个目录下，需要进一步支持
+- 针对 once 运行，需要将产生的结果文件，推送到其它服务（如推送到其它github仓库，该仓库对外提供界面）
+
 ## 使用
 假设用户为 lighthouse
 
@@ -40,10 +45,11 @@ npm install -g diff2html-cli
 
 配置 `conf.py` 中的`repo`等字段。
 
-- 执行 `python3 run.py once` 仅运行一次
-- 执行 `python3 run.py timer` 定时执行
+#### Serverless 运行
+- 执行 `python3 run.py once` 仅运行一次，用于调试或者 Serverless 运行的场景
 
-后台启动 webserver，绑定 17777 端口，提供界面访问。
+#### 服务运行
+后台启动 webserver，默认绑定 17777 端口，提供界面访问。
 ```shell
 ./bin/start_webserver.sh
 ```
@@ -60,4 +66,3 @@ crontab 设置监控，防止服务重启
 # 复制进去，注意开头的#不要复制，路径可以实际安装路径修改
 crontab -e
 ```
-## 解决仓库太大的问题
